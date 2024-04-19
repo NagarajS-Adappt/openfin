@@ -9,30 +9,22 @@ const {
 } = require('@openfin/automation-helpers');
 const { NativeDriver, NativeDriverKeys } = require('@openfin/automation-native');
 const expectChai = require('chai').expect;
-const { By } = require('selenium-webdriver');
-const { expect, browser, $ } = require('@wdio/globals')
+// const { By } = require('selenium-webdriver');  
+const { expect, browser, $ } = require('@wdio/globals');
 const { Key } = require('webdriverio');
+const request = require('supertest');
 
-let providerWindowUrl;
 
 describe('Register with Home', () => {
-    
 	it('The runtime is ready', async () => {
 		const isReady = await OpenFinSystem.waitForReady(10000);
 		expectChai(isReady).to.equal(true);
 	});
 
 	it('Can switch to platform window', async () => {
-		// const switched = await browser.switchWindow('Platform Provider');
-        // expectChai(switched).to.equal(true);
         await browser.switchWindow('Platform Provider');
-        console.log('Switched to platform window');
+        // console.log('Switched to platform window');
 	});
-
-    // it('The url should be set', async () => {
-	// 	providerWindowUrl = await browser.getUrl();
-	// 	expect(providerWindowUrl).not.be.undefined;
-	// });
 
     it('The runtime version should be set', async () => {
 		const fin = await OpenFinProxy.fin();
@@ -79,13 +71,36 @@ describe('Register with Home', () => {
         }
 	});
 
-	it('Can perform a conditional Selenium Webdriver specific test', async () => {
+	it('Can perform a conditional specific test', async () => {
 		if(browser) {
             const elem = await $('//*[@id="search-input"]');
             expectChai(elem).to.exist;
             // await elem.setValue('test')
         }        
 	});
+
+    const baseurl = 'https://reqres.in';
+	it('should retrieve a list of users', async () => {
+//     for (let i = 0; i < 10; i++) {
+//               const response = await request(baseurl)
+//           .get('/api/users') // Update with the specific endpoint you want to test
+//           .expect(200); // Assuming you are expecting a 200 status code
+//           console.log('Response:', response.body);
+//   }
+        const response = await request(baseurl)
+          .get('/api/users')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(200);
+    
+        
+        expect(response.body).toHaveProperty('page');
+        expect(response.body).toHaveProperty('per_page');
+        expect(response.body).toHaveProperty('total');
+        expect(response.body).toHaveProperty('total_pages');
+        expect(response.body).toHaveProperty('data');
+        expect(Array.isArray(response.body.data)).toBe(true);
+      });
 
     it('Can perform an actions test with keys and mouse', async () => {      
         const elem = await $('//*[@id="search-input"]');
@@ -101,7 +116,7 @@ describe('Register with Home', () => {
         // let header = await $('h1*=Call Application')
         // expectChai(header).to.exist;
         // Start the call
-        await $('#action').click();        
+        await $('#action').click();
         await browser.pause(2000);
         
         // End the call
