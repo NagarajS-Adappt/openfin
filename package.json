@@ -13,9 +13,11 @@
     "webdriverio": "^8.36.0"
   },
   "devDependencies": {
+    "@wdio/allure-reporter": "^8.38.2",
     "@wdio/local-runner": "^8.36.0",
     "@wdio/mocha-framework": "^8.36.0",
-    "@wdio/spec-reporter": "^8.36.0"
+    "@wdio/spec-reporter": "^8.36.0",
+    "wdio-cucumberjs-json-reporter": "^5.2.1"
   },
   "scripts": {
     "kill": "fkill -f -s OpenFin.exe OpenFinRVM.exe chromedriver.exe OpenFin OpenFinRVM chromedriver",

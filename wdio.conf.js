@@ -28,7 +28,11 @@ exports.config = {
 	port: chromeDriverPort,
 	logLevel: 'silent', // 'debug' for more information
 	framework: 'mocha',
-	reporters: ['spec'],
+	reporters: [['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: true,
+    }]],
 	mochaOpts: {
 		ui: 'bdd',
 		timeout: 60000

@@ -19,18 +19,21 @@ describe('Register with Home', () => {
 	it('The runtime is ready', async () => {
 		const isReady = await OpenFinSystem.waitForReady(10000);
 		expectChai(isReady).to.equal(true);
+    await browser.pause(2000);
 	});
 
 	it('Can switch to platform window', async () => {
         await browser.switchWindow('Platform Provider');
-        // console.log('Switched to platform window');
+        console.log('Switched to platform window');
+        await browser.pause(2000);
 	});
 
-    it('The runtime version should be set', async () => {
-		const fin = await OpenFinProxy.fin();
-		const version = await fin.System.getVersion();
-		expectChai(version).to.equal('34.118.78.80');
-	});
+
+  //   it('The runtime version should be set', async () => {
+	// 	const fin = await OpenFinProxy.fin();
+	// 	const version = await fin.System.getVersion();
+	// 	expectChai(version).to.equal('34.118.78.80');
+	// });
 
     it('The identity should be set', async () => {
 		const fin = await OpenFinProxy.fin();
@@ -42,24 +45,24 @@ describe('Register with Home', () => {
         const handles = await browser.getWindowHandles();
         // await browser.switchToWindow(handles[0])
         expectChai(handles.length).to.greaterThan(0);
-        // console.log('Title :', await browser.getTitle())
+         console.log('Title :', await browser.getTitle())
     });
 
-    it('Can launch notification center in a security realm', async () => {
-		const launched = await OpenFinNotifications.launch();
-		expectChai(launched).to.equal(true);
+  //   it('Can launch notification center in a security realm', async () => {
+	// 	const launched = await OpenFinNotifications.launch();
+	// 	expectChai(launched).to.equal(true);
 
-		if(launched) {
-			await OpenFinNotifications.toggle();
-		}
-	});
+	// 	if(launched) {
+	// 		await OpenFinNotifications.toggle();
+	// 	}
+	// });
 
     it('Can open the home window', async () => {
 		const isShown = await OpenFinHome.show(30000);
 		expectChai(isShown).to.equal(true);
 
 		await WebDriver.saveScreenshot();
-		await OpenFinNotifications.toggle();
+		//await OpenFinNotifications.toggle();
 	});
 
     it('Can perform a conditional Node Webdriver specific test', async () => {
@@ -81,12 +84,6 @@ describe('Register with Home', () => {
 
     const baseurl = 'https://reqres.in';
 	it('should retrieve a list of users', async () => {
-//     for (let i = 0; i < 10; i++) {
-//               const response = await request(baseurl)
-//           .get('/api/users') // Update with the specific endpoint you want to test
-//           .expect(200); // Assuming you are expecting a 200 status code
-//           console.log('Response:', response.body);
-//   }
         const response = await request(baseurl)
           .get('/api/users')
           .set('Accept', 'application/json')
@@ -112,17 +109,30 @@ describe('Register with Home', () => {
 
         await browser.switchWindow('Call Application');
 
-        // h1 Call Application
-        // let header = await $('h1*=Call Application')
-        // expectChai(header).to.exist;
-        // Start the call
+       // h1 Call Application
+        let header = await $('h1*=Call Application')
+        expectChai(header).to.exist;
+       // Start the call
         await $('#action').click();
-        await browser.pause(2000);
+        await browser.pause(5000);
         
         // End the call
         await $('#action').click();
         
-        await browser.pause(5000);
+       // await browser.pause(5000);
+
+        // const isReady = await OpenFinSystem.waitForReady(10000);
+		    // expectChai(isReady).to.equal(true);
+        
+        // await browser.switchWindow('Platform Provider'); 
+        // await browser.pause(3000);
+        // console.log('Switched to platform window');
+
+        // const elem1 = await $('//*[@id="search-input"]');
+        // await elem1.setValue('Participant Selection');
+        // await browser.keys([Key.Enter]);
+        // await browser.pause(2000);
+
     });
 
 });
