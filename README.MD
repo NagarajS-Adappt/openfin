@@ -5,7 +5,7 @@
 
 ```
 
-allure serve allure-results
+Allure report: allure serve allure-results
 
 `To run the tests, run the following command:`
 
